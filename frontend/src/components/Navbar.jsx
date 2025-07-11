@@ -44,6 +44,10 @@ const Navbar = () => {
             <li className='py-1'>ÉVÉNEMENTS</li>
             <hr className='border-2 border-blue-500 w-0 hidden' />
         </NavLink>
+        <NavLink to={'/directory'}>
+            <li className='py-1'>ANNUAIRE</li>
+            <hr className='border-2 border-blue-500 w-0 hidden' />
+        </NavLink>
       </ul>
       <div className='flex gap-4'>
         {
@@ -56,7 +60,9 @@ const Navbar = () => {
                         {userType === 'client' ? (
                             <>
                                 <p onClick={()=>navigate('/client-dashboard')} className='hover:text-black cursor-pointer'>Tableau de bord</p>
+                                <p onClick={()=>navigate('/client-calendar')} className='hover:text-black cursor-pointer'>Mon Calendrier</p>
                                 <p onClick={()=>navigate('/my-profile')} className='hover:text-black cursor-pointer'>Mon Profil</p>
+                                <p onClick={()=>navigate('/client-profile')} className='hover:text-black cursor-pointer'>Paramètres</p>
                             </>
                         ) : (
                             <>
@@ -92,6 +98,9 @@ const Navbar = () => {
             </NavLink>
             <NavLink onClick={()=>setShowMenu(false)} to={'/events'}>
               <li> <p className='py-1'>ÉVÉNEMENTS</p></li>
+            </NavLink>
+            <NavLink onClick={()=>setShowMenu(false)} to={'/directory'}>
+              <li> <p className='py-1'>ANNUAIRE</p></li>
             </NavLink>
           </ul>
         </div>

@@ -15,6 +15,11 @@ import 'react-toastify/dist/ReactToastify.css';
 import VerifyPayment from './pages/VerifyPayment'
 import ClientDashboard from './pages/ClientDashboard'
 import Events from './pages/Events'
+import ClientProfile from './pages/ClientProfile'
+import ClientCalendar from './pages/ClientCalendar'
+import AdminDashboard from './pages/AdminDashboard'
+import PublicProfile from './pages/PublicProfile'
+import ClientDirectory from './pages/ClientDirectory'
 
 const App = () => {
   return (
@@ -34,6 +39,11 @@ const App = () => {
         <Route path="/verify-payment" element={<VerifyPayment />} />
         <Route path='/client-dashboard' element={<ClientDashboard /> } />
         <Route path='/events' element={<Events /> } />
+        <Route path='/client-profile' element={<ClientProfile /> } />
+        <Route path='/client-calendar' element={<ClientCalendar /> } />
+        <Route path='/admin-dashboard' element={<AdminDashboard /> } />
+        <Route path='/client/:clientId' element={<PublicProfile /> } />
+        <Route path='/directory' element={<ClientDirectory /> } />
       </Routes>
       <Footer/>
     </div>
