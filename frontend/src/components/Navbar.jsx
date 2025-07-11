@@ -7,13 +7,15 @@ const Navbar = () => {
 
     const navigate = useNavigate()
 
-    const {token, setToken, userData} = useContext(AppContext)
+    const {token, setToken, userData, userType, setUserType} = useContext(AppContext)
 
     const [showMenu, setShowMenu] = useState(false)
 
     const logout = () => {
       setToken(false)
       localStorage.removeItem('token')
+      localStorage.removeItem('userType')
+      setUserType('user')
     }
 
 
@@ -38,6 +40,10 @@ const Navbar = () => {
             <li className='py-1'>CONTACT</li>
             <hr className='border-2 border-blue-500 w-0 hidden' />
         </NavLink>
+        <NavLink to={'/events'}>
+            <li className='py-1'>ÉVÉNEMENTS</li>
+            <hr className='border-2 border-blue-500 w-0 hidden' />
+        </NavLink>
       </ul>
       <div className='flex gap-4'>
         {
@@ -47,8 +53,17 @@ const Navbar = () => {
                 <img className='w-2.5' src={assets.dropdown_icon} alt="" />
                 <div className='absolute top-10 right-0 bg-white shadow-md rounded-md p-4 z-10 hidden group-hover:block' style={{display: showMenu ? 'block' : 'none'}}>
                     <div className='flex flex-col gap-2 text-gray-700 font-semibold'>
-                        <p onClick={()=>navigate('my-profile')} className='hover:text-black cursor-pointer'>My Profile</p>
-                        <p onClick={()=>navigate('my-appointments')} className='hover:text-black cursor-pointer'>My Appointments</p>
+                        {userType === 'client' ? (
+                            <>
+                                <p onClick={()=>navigate('/client-dashboard')} className='hover:text-black cursor-pointer'>Tableau de bord</p>
+                                <p onClick={()=>navigate('/my-profile')} className='hover:text-black cursor-pointer'>Mon Profil</p>
+                            </>
+                        ) : (
+                            <>
+                                <p onClick={()=>navigate('/my-profile')} className='hover:text-black cursor-pointer'>Mon Profil</p>
+                                <p onClick={()=>navigate('/my-appointments')} className='hover:text-black cursor-pointer'>Mes Rendez-vous</p>
+                            </>
+                        )}
                         <p onClick={logout} className='hover:text-black cursor-pointer'>Logout</p>
                     </div>
                 </div>
@@ -74,6 +89,9 @@ const Navbar = () => {
             </NavLink>
             <NavLink onClick={()=>setShowMenu(false)} to={'/contact'}>
               <li> <p className='py-1'>CONTACT</p></li>
+            </NavLink>
+            <NavLink onClick={()=>setShowMenu(false)} to={'/events'}>
+              <li> <p className='py-1'>ÉVÉNEMENTS</p></li>
             </NavLink>
           </ul>
         </div>

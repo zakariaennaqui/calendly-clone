@@ -12,6 +12,7 @@ const AppContextProvider = (props) => {
     const [services, setServices] = useState([])
     const [token, setToken] = useState(localStorage.getItem('token')?localStorage.getItem('token'):false)
     const [userData, setUserData] = useState(false)
+    const [userType, setUserType] = useState(localStorage.getItem('userType') || 'user') // 'user' or 'client'
 
     const getServicesData = async () => {
         try {
@@ -49,7 +50,8 @@ const AppContextProvider = (props) => {
         token,setToken,
         backendUrl,
         userData,setUserData,
-        loadUserProfileData
+        loadUserProfileData,
+        userType,setUserType
     }
 
     useEffect(()=>{

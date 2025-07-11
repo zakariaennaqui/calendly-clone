@@ -8,6 +8,9 @@ import serviceModel from '../models/serviceModel.js'
 import appointmentModel from '../models/appointmentModel.js';
 import razorpay from 'razorpay'
 import Stripe from 'stripe'
+import { scheduleAppointmentReminders } from '../services/notificationService.js';
+import { sendEmail, generateEmailTemplate } from '../config/email.js';
+import { applyPromoCode } from './promoController.js';
 
 const loginUser = async (req, res) => {
     try {
@@ -122,7 +125,7 @@ const updateProfile = async (req, res) => {
 
 const bookAppointment = async (req, res) => {
     try {
-        const { userId, docId, slotDate, slotTime} = req.body;
+        const { userId, docId, slotDate, slotTime, promoCodeId } = req.body;
         const docData = await serviceModel.findById(docId).select('-password')
         if (!docData.available) {
             return res.json({ success: false, message: "service is not available" })
@@ -146,12 +149,18 @@ const bookAppointment = async (req, res) => {
 
         delete docData.slots_booked
 
+        let finalAmount = docData.fees;
+        
+        // Apply promo code if provided
+        if (promoCodeId) {
+            await applyPromoCode(promoCodeId, userId, null); // Will update with appointmentId after creation
+        }
         const appointmentData = {
             userId,
             docId,
             userData,
             docData,
-            amount:docData.fees,
+            amount: finalAmount,
             slotDate,
             slotTime,
             date:Date.now()
@@ -161,6 +170,22 @@ const bookAppointment = async (req, res) => {
         await newAppointment.save()
 
         await serviceModel.findByIdAndUpdate(docId, {slots_booked})
+        
+        // Schedule reminders
+        await scheduleAppointmentReminders(newAppointment._id);
+        
+        // Send confirmation email
+        const emailData = {
+            userName: userData.name,
+            serviceName: docData.name,
+            date: slotDate.replace(/_/g, '/'),
+            time: slotTime,
+            location: `${docData.address.line1}, ${docData.address.line2}`
+        };
+        
+        const emailHtml = generateEmailTemplate('appointment_confirmation', emailData);
+        await sendEmail(userData.email, 'Rendez-vous confirmé', emailHtml);
+        
         res.json({ success: true, message: "Appointment booked successfully" })
 
     } catch (error) {

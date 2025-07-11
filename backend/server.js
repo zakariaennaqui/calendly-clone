@@ -6,6 +6,9 @@ import connectCloudinary from './config/cloudinary.js'
 import adminRouter from './routes/adminRoute.js'
 import serviceRouter from './routes/serviceRoute.js'
 import userRouter from './routes/userRoute.js'
+import clientRouter from './routes/clientRoute.js'
+import eventRouter from './routes/eventRoute.js'
+import './services/notificationService.js' // Initialize notification service
 
 // app config
 const app = express()
@@ -21,6 +24,8 @@ app.use(cors())
 app.use('/api/admin',adminRouter)
 app.use('/api/service',serviceRouter)
 app.use('/api/user',userRouter)
+app.use('/api/client',clientRouter)
+app.use('/api/event',eventRouter)
 app.get('/', (req, res) => {
   res.send('API working!')
 })

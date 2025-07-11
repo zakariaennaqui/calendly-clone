@@ -13,6 +13,8 @@ import About from './pages/About'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import VerifyPayment from './pages/VerifyPayment'
+import ClientDashboard from './pages/ClientDashboard'
+import Events from './pages/Events'
 
 const App = () => {
   return (
@@ -30,6 +32,8 @@ const App = () => {
         <Route path='/appointment/:docId' element={<Appointment /> } />
         <Route path='/about' element={<About /> } />
         <Route path="/verify-payment" element={<VerifyPayment />} />
+        <Route path='/client-dashboard' element={<ClientDashboard /> } />
+        <Route path='/events' element={<Events /> } />
       </Routes>
       <Footer/>
     </div>
